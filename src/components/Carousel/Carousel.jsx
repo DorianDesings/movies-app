@@ -1,16 +1,25 @@
+import { Link } from 'react-router-dom';
 import Card from '../Card/Card';
-import { StyledCarousel } from './carousel.styles';
-const Carousel = ({ title, cards }) => (
+import {
+	StyledCarousel,
+	StyledCarouselHeader,
+	StyledTitle,
+	StyledViewMore
+} from './carousel.styles';
+const Carousel = ({ title, cards, route = '/', type }) => (
 	<>
-		<h2 style={{ padding: '0 1.5rem' }}>{title}</h2>
+		<StyledCarouselHeader>
+			<StyledTitle>{title}</StyledTitle>
+			<Link to={route}>
+				<StyledViewMore>View More</StyledViewMore>
+			</Link>
+		</StyledCarouselHeader>
 		<StyledCarousel>
 			{cards &&
 				cards.map(card => (
-					<Card
-						key={card.id}
-						img={card.poster_path}
-						title={card.title || card.name}
-					/>
+					<Link key={card.id} to={`/details/${type}/${card.id}`}>
+						<Card img={card.poster_path} title={card.title || card.name} />
+					</Link>
 				))}
 		</StyledCarousel>
 	</>

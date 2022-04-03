@@ -10,7 +10,7 @@ const Menu = () => {
 			<NavLink to={'/movies'}>
 				<li>Movies</li>
 			</NavLink>
-			<NavLink to={'/tv-series'}>
+			<NavLink to={'/series'}>
 				<li>Tv Series</li>
 			</NavLink>
 			<NavLink to={'/favourites'}>

@@ -8,8 +8,9 @@ export const fetchApi = async url => {
 
 		const parsedResponse = await response.json();
 
-		if (parsedResponse) return parsedResponse;
-		else {
+		if (parsedResponse) {
+			return parsedResponse;
+		} else {
 			// Action de error
 		}
 	} catch (error) {}

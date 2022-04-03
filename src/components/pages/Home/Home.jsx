@@ -10,10 +10,30 @@ const Home = () => {
 	return (
 		<>
 			<Banner />
-			<Carousel title='Trending Movies' cards={moviesData.trendingMovies} />
-			<Carousel title='Top Rated Movies' cards={moviesData.topRatedMovies} />
-			<Carousel title='Trending Series' cards={seriesData.trendingSeries} />
-			<Carousel title='Top Rated Series' cards={seriesData.topRatedSeries} />
+			<Carousel
+				title='Trending Movies'
+				cards={moviesData.trendingMovies}
+				route='/movies'
+				type='movie'
+			/>
+			<Carousel
+				title='Top Rated Movies'
+				cards={moviesData.topRatedMovies}
+				route='/movies'
+				type='movie'
+			/>
+			<Carousel
+				title='Trending Series'
+				cards={seriesData.trendingSeries}
+				route='/series'
+				type='tv'
+			/>
+			<Carousel
+				title='Top Rated Series'
+				cards={seriesData.topRatedSeries}
+				route='/series'
+				type='tv'
+			/>
 		</>
 	);
 };
