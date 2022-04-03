@@ -1,6 +1,5 @@
 import { useEffect, useReducer } from 'react';
-import { API_KEY, API_URL, API_VERSION } from '../../constants/api';
-import { fetchMovies } from '../../lib/utils/fetchMovies';
+import { fetchApi } from '../../lib/utils/fetchApi';
 import { MoviesContext } from './MoviesContext';
 import { moviesReducer } from './MoviesReducer';
 
@@ -24,12 +23,12 @@ const MoviesProvider = ({ children }) => {
 };
 
 const fetchTrendingMovies = async setMoviesData => {
-	const response = await fetchMovies('/trending/movie/day');
+	const trendingMovies = await fetchApi('/trending/movie/day');
 
-	if (response) {
+	if (trendingMovies) {
 		setMoviesData({
 			type: 'SET_TRENDING_MOVIES',
-			trendingMovies: response.results
+			trendingMovies: trendingMovies.results
 		});
 	} else {
 		// Action de error
@@ -37,22 +36,16 @@ const fetchTrendingMovies = async setMoviesData => {
 };
 
 const fetchTopRatedMovies = async setMoviesData => {
-	try {
-		const response = await fetch(
-			`${API_URL}${API_VERSION}/movie/top_rated?api_key=${API_KEY}`
-		);
+	const topRatedMovies = await fetchApi('/movie/top_rated');
 
-		const parsedResponse = await response.json();
-
-		if (parsedResponse) {
-			setMoviesData({
-				type: 'SET_TOP_RATED_MOVIES',
-				topRatedMovies: parsedResponse.results
-			});
-		} else {
-			// Action de error
-		}
-	} catch (error) {}
+	if (topRatedMovies) {
+		setMoviesData({
+			type: 'SET_TOP_RATED_MOVIES',
+			topRatedMovies: topRatedMovies.results
+		});
+	} else {
+		// Action de error
+	}
 };
 
 export default MoviesProvider;
