@@ -1,51 +1,43 @@
 import { useEffect, useReducer } from 'react';
-import { fetchApi } from '../../lib/utils/fetchApi';
+import {
+	fetchTopRatedMovies,
+	fetchTrendingMovies,
+	searchMovies
+} from '../../hooks/useFetchMovies';
 import { MoviesContext } from './MoviesContext';
 import { moviesReducer } from './MoviesReducer';
 
 const INITIAL_STATE = {
-	trendingMovies: []
+	search: '',
+	trendingMovies: [],
+	topRatedMovies: [],
+	movies: [],
+	currentPage: 1
 };
+
+const getActions = setMoviesData => ({
+	setSearch: value => setMoviesData({ type: 'SET_SEARCH', search: value })
+});
 
 const MoviesProvider = ({ children }) => {
 	const [moviesData, setMoviesData] = useReducer(moviesReducer, INITIAL_STATE);
+
+	const actions = getActions(setMoviesData);
 
 	useEffect(() => {
 		fetchTrendingMovies(setMoviesData);
 		fetchTopRatedMovies(setMoviesData);
 	}, []);
 
+	useEffect(() => {
+		searchMovies(moviesData, setMoviesData);
+	}, [moviesData.search, moviesData.currentPage]);
+
 	return (
-		<MoviesContext.Provider value={{ moviesData }}>
+		<MoviesContext.Provider value={{ moviesData, setMoviesData, ...actions }}>
 			{children}
 		</MoviesContext.Provider>
 	);
-};
-
-const fetchTrendingMovies = async setMoviesData => {
-	const trendingMovies = await fetchApi('/trending/movie/day');
-
-	if (trendingMovies) {
-		setMoviesData({
-			type: 'SET_TRENDING_MOVIES',
-			trendingMovies: trendingMovies.results
-		});
-	} else {
-		// Action de error
-	}
-};
-
-const fetchTopRatedMovies = async setMoviesData => {
-	const topRatedMovies = await fetchApi('/movie/top_rated');
-
-	if (topRatedMovies) {
-		setMoviesData({
-			type: 'SET_TOP_RATED_MOVIES',
-			topRatedMovies: topRatedMovies.results
-		});
-	} else {
-		// Action de error
-	}
 };
 
 export default MoviesProvider;

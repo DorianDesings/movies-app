@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const StyledCard = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	min-width: 40vw;

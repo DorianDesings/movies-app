@@ -1,11 +1,18 @@
 import { useEffect, useReducer } from 'react';
-import { fetchApi } from '../../lib/utils/fetchApi';
+import {
+	fetchPopularSeries,
+	fetchTopRatedSeries,
+	fetchTrendingSeries
+} from '../../hooks/useFetchSeries';
 import { SeriesContext } from './SeriesContext';
 import { SeriesReducer } from './SeriesReducer';
 
 const INITIAL_STATE = {
+	search: '',
 	trendingSeries: [],
-	topRatedSeries: []
+	topRatedSeries: [],
+	series: [],
+	currentPage: 1
 };
 
 const SeriesProvider = ({ children }) => {
@@ -16,37 +23,15 @@ const SeriesProvider = ({ children }) => {
 		fetchTopRatedSeries(setSeriesData);
 	}, []);
 
+	useEffect(() => {
+		fetchPopularSeries(seriesData, setSeriesData);
+	}, [seriesData.currentPage]);
+
 	return (
-		<SeriesContext.Provider value={{ seriesData }}>
+		<SeriesContext.Provider value={{ seriesData, setSeriesData }}>
 			{children}
 		</SeriesContext.Provider>
 	);
-};
-
-const fetchTrendingSeries = async setSeriesData => {
-	const trendingSeries = await fetchApi('/trending/tv/day');
-
-	if (trendingSeries) {
-		setSeriesData({
-			type: 'SET_TRENDING_SERIES',
-			trendingSeries: trendingSeries.results
-		});
-	} else {
-		// Action de error
-	}
-};
-
-const fetchTopRatedSeries = async setSeriesData => {
-	const topRatedSeries = await fetchApi('/tv/top_rated');
-
-	if (topRatedSeries) {
-		setSeriesData({
-			type: 'SET_TOP_RATED_SERIES',
-			topRatedSeries: topRatedSeries.results
-		});
-	} else {
-		// Action de error
-	}
 };
 
 export default SeriesProvider;
