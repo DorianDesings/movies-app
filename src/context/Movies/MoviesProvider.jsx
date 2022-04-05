@@ -3,7 +3,7 @@ import {
 	fetchTopRatedMovies,
 	fetchTrendingMovies,
 	searchMovies
-} from '../../hooks/useFetchMovies';
+} from '../../lib/api/fetchMovies';
 import { MoviesContext } from './MoviesContext';
 import { moviesReducer } from './MoviesReducer';
 
@@ -16,25 +16,59 @@ const INITIAL_STATE = {
 };
 
 const getActions = setMoviesData => ({
-	setSearch: value => setMoviesData({ type: 'SET_SEARCH', search: value })
+	setSearch: value => setMoviesData({ type: 'SET_SEARCH', search: value }),
+	setTrendingMovies: movies => {
+		setMoviesData({
+			type: 'SET_TRENDING_MOVIES',
+			trendingMovies: movies
+		});
+	},
+	setTopRatedMovies: movies => {
+		setMoviesData({
+			type: 'SET_TOP_RATED_MOVIES',
+			topRatedMovies: movies
+		});
+	},
+	setSearchMovies: movies => {
+		setMoviesData({
+			type: 'SET_MOVIES',
+			movies: movies
+		});
+	}
 });
+
+const setTrending = async setTrendingMovies => {
+	const movies = await fetchTrendingMovies();
+	setTrendingMovies(movies);
+};
+
+const setTopRated = async setTopRatedMovies => {
+	const movies = await fetchTopRatedMovies();
+	setTopRatedMovies(movies);
+};
+
+const setMovies = async (moviesData, setSearchMovies) => {
+	const movies = await searchMovies(moviesData);
+	setSearchMovies(movies);
+};
 
 const MoviesProvider = ({ children }) => {
 	const [moviesData, setMoviesData] = useReducer(moviesReducer, INITIAL_STATE);
 
-	const actions = getActions(setMoviesData);
+	const { setSearch, setTrendingMovies, setTopRatedMovies, setSearchMovies } =
+		getActions(setMoviesData);
 
 	useEffect(() => {
-		fetchTrendingMovies(setMoviesData);
-		fetchTopRatedMovies(setMoviesData);
+		setTrending(setTrendingMovies);
+		setTopRated(setTopRatedMovies);
 	}, []);
 
 	useEffect(() => {
-		searchMovies(moviesData, setMoviesData);
+		setMovies(moviesData, setSearchMovies);
 	}, [moviesData.search, moviesData.currentPage]);
 
 	return (
-		<MoviesContext.Provider value={{ moviesData, setMoviesData, ...actions }}>
+		<MoviesContext.Provider value={{ moviesData, setMoviesData, setSearch }}>
 			{children}
 		</MoviesContext.Provider>
 	);
