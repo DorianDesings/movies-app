@@ -4,27 +4,14 @@ import Cards from '../../Cards/Cards';
 import Search from '../../Search/Search';
 
 const Movies = () => {
-	const { moviesData, setMoviesData, setSearch } = useContext(MoviesContext);
+	const { moviesData, setPage, setSearch } = useContext(MoviesContext);
 	return (
 		<>
 			<Search title={'Movies'} setValue={setSearch} value={moviesData.search} />
 			<Cards cards={moviesData.movies} type='movie' />
-			<button
-				onClick={() =>
-					nextMoviesResults(moviesData.currentPage + 1, setMoviesData)
-				}
-			>
-				NEXT
-			</button>
+			<button onClick={() => setPage(moviesData.currentPage + 1)}>NEXT</button>
 		</>
 	);
-};
-
-const nextMoviesResults = (page, setMoviesData) => {
-	setMoviesData({
-		type: 'SET_PAGE',
-		currentPage: page
-	});
 };
 
 export default Movies;
