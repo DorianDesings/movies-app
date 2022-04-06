@@ -1,11 +1,9 @@
 import { useReducer } from 'react';
 import { FavouritesReducer } from '../context/Favourite/FavouritesReducer';
+import { getFavouritesFromLocalStorage } from '../lib/utils/favouritesLocalStorage';
+import { useLocalStorage } from './useLocalStorage';
 
-const INITIAL_STATE = {
-	search: '',
-	favouriteMovies: [],
-	favouriteSeries: []
-};
+const INITIAL_STATE = getFavouritesFromLocalStorage();
 
 const getActions = setFavouritesData => ({
 	setFavouriteMovie: favouriteMovie =>
@@ -36,6 +34,8 @@ export const useFavourites = () => {
 		FavouritesReducer,
 		INITIAL_STATE
 	);
+
+	useLocalStorage(favouritesData);
 
 	const {
 		setFavouriteMovie,
