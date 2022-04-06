@@ -1,34 +1,10 @@
-import { useEffect, useReducer } from 'react';
-import {
-	fetchPopularSeries,
-	fetchTopRatedSeries,
-	fetchTrendingSeries
-} from '../../hooks/useFetchSeries';
+import { useSeries } from '../../hooks/useSeries';
 import { SeriesContext } from './SeriesContext';
-import { SeriesReducer } from './SeriesReducer';
-
-const INITIAL_STATE = {
-	search: '',
-	trendingSeries: [],
-	topRatedSeries: [],
-	series: [],
-	currentPage: 1
-};
 
 const SeriesProvider = ({ children }) => {
-	const [seriesData, setSeriesData] = useReducer(SeriesReducer, INITIAL_STATE);
-
-	useEffect(() => {
-		fetchTrendingSeries(setSeriesData);
-		fetchTopRatedSeries(setSeriesData);
-	}, []);
-
-	useEffect(() => {
-		fetchPopularSeries(seriesData, setSeriesData);
-	}, [seriesData.currentPage]);
-
+	const { seriesData, setPage, setSearch } = useSeries();
 	return (
-		<SeriesContext.Provider value={{ seriesData, setSeriesData }}>
+		<SeriesContext.Provider value={{ seriesData, setPage, setSearch }}>
 			{children}
 		</SeriesContext.Provider>
 	);
