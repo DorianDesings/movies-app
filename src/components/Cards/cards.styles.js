@@ -16,14 +16,15 @@ const StyledFavourite = styled.div`
 	top: 0;
 	width: 50px;
 	height: 50px;
+	border-top-right-radius: 1rem;
 	background-color: rgb(0 0 0 / 0.7);
 	z-index: 1;
 
 	&::after {
 		content: ${({ isFavourite }) =>
 			isFavourite
-				? 'url(assets/icons/heart-solid.svg)'
-				: 'url(assets/icons/heart-outline.svg)'};
+				? 'url(/assets/icons/heart-solid.svg)'
+				: 'url(/assets/icons/heart-outline.svg)'};
 		width: 30px;
 		height: 30px;
 	}

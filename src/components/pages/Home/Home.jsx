@@ -8,7 +8,6 @@ const Home = () => {
 	const { moviesData } = useContext(MoviesContext);
 	const { seriesData } = useContext(SeriesContext);
 
-	console.log(seriesData);
 	return (
 		<>
 			<Banner />

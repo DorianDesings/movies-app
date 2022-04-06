@@ -15,8 +15,6 @@ export const searchSeries = async ({ search, currentPage }) => {
 export const fetchTrendingSeries = async () => {
 	const trendingSeries = await fetchApi('/trending/tv/day');
 
-	console.log(trendingSeries.results);
-
 	if (trendingSeries) {
 		return trendingSeries.results;
 	}

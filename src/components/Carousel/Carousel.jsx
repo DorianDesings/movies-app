@@ -18,7 +18,11 @@ const Carousel = ({ title, cards, route = '/', type }) => (
 			{cards &&
 				cards.map(card => (
 					<Link key={card.id} to={`/details/${type}/${card.id}`}>
-						<Card img={card.poster_path} title={card.title || card.name} />
+						<Card
+							key={card.id}
+							img={card.poster_path}
+							title={card.title || card.name}
+						/>
 					</Link>
 				))}
 		</StyledCarousel>

@@ -5,6 +5,7 @@ import Search from '../../Search/Search';
 
 const Movies = () => {
 	const { moviesData, setPage, setSearch } = useContext(MoviesContext);
+
 	return (
 		<>
 			<Search title={'Movies'} setValue={setSearch} value={moviesData.search} />

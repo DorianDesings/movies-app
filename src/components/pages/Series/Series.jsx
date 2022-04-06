@@ -6,7 +6,6 @@ import Search from '../../Search/Search';
 const Series = () => {
 	const { seriesData, setPage, setSearch } = useContext(SeriesContext);
 
-	console.log('SERIES', seriesData);
 	return (
 		<>
 			<Search title={'Series'} setValue={setSearch} value={seriesData.search} />
